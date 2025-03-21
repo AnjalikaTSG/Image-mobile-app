@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TextInput, StyleSheet, TouchableOpacity, Alert, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  Platform,
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ActionSheetIOS } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function App() {
   const [imageSource, setImageSource] = useState(null);
@@ -98,11 +108,13 @@ export default function App() {
       },
       body: formData,
     })
-      .then((response) => response.text())  // Change this to text() to inspect the raw response
+      .then((response) => response.text()) // Get raw response
       .then((data) => {
         try {
-          const jsonData = JSON.parse(data); // Attempt to parse the response as JSON
-          Alert.alert('Upload Success', JSON.stringify(jsonData));
+          const jsonData = JSON.parse(data); // Try parsing JSON
+          Alert.alert('Upload Success', 'Your image has been uploaded successfully!');
+          setImageSource(null); // Reset image
+          setComment(''); // Clear comment field
         } catch (err) {
           Alert.alert('Error', 'Failed to parse JSON response: ' + err.message);
         }
@@ -112,13 +124,24 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Upload Your Image</Text>
+
       <Image
         style={styles.image}
         source={imageSource ? imageSource : require('./assets/Not Available.png')}
       />
-      <TouchableOpacity style={styles.button} onPress={showOptions}>
-        <Text style={styles.text}>Select Image</Text>
-      </TouchableOpacity>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.iconButton} onPress={openCamera}>
+          <Icon name="camera" size={24} color="white" />
+          <Text style={styles.text}>Take a Photo</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.iconButton} onPress={openImageLibrary}>
+          <Icon name="image" size={24} color="white" />
+          <Text style={styles.text}>Select from Gallery</Text>
+        </TouchableOpacity>
+      </View>
 
       <TextInput
         style={styles.input}
@@ -127,8 +150,8 @@ export default function App() {
         onChangeText={setComment}
       />
 
-      <TouchableOpacity style={styles.button} onPress={uploadPhoto}>
-        <Text style={styles.text}>Upload Image</Text>
+      <TouchableOpacity style={styles.uploadButton} onPress={uploadPhoto}>
+        <Text style={styles.uploadText}>Upload Image</Text>
       </TouchableOpacity>
     </View>
   );
@@ -137,36 +160,68 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
-  button: {
+  title: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+    justifyContent: 'space-between', // Adjusts spacing between buttons
+    width: '80%', // Set a fixed width to align buttons properly
+  },
+  iconButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#007bff',
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 30,
+    marginHorizontal: 10,
+    flex: 1, // Makes both buttons take equal width
+  },
+  text: {
+    color: 'white',
+    fontSize: 16,
+    marginLeft: 8,
+  },
+  uploadButton: {
     width: 250,
     height: 50,
-    backgroundColor: 'blue',
+    backgroundColor: '#3EA055',
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
   },
-  text: {
+  uploadText: {
     color: 'white',
-    fontSize: 20,
-    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   image: {
     width: 200,
     height: 200,
-    marginTop: 30,
+    borderRadius: 10,
+    backgroundColor: '#ddd',
+    marginTop: 20,
   },
   input: {
-    height: 40,
+    height: 50,
     borderColor: '#ccc',
     borderWidth: 1,
-    width: 250,
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    width: '90%',
+    borderRadius: 10,
+    paddingHorizontal: 15,
     marginTop: 20,
+    backgroundColor: 'white',
   },
 });
