@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import UploadScreen from './components/UploadScreen';

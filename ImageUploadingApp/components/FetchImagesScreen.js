@@ -1,8 +1,7 @@
-// FetchImagesScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, Alert } from 'react-native';
 
-const SERVER_URL = 'http://192.168.1.163/api/'; // Change this to match your server IP
+const SERVER_URL = 'http://192.168.1.163/api/'; // server IP
 
 const FetchImagesScreen = () => {
   const [uploadedImages, setUploadedImages] = useState([]);

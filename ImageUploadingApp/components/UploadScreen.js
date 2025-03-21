@@ -1,4 +1,3 @@
-// UploadScreen.js
 import React, { useState } from "react";
 import {
   View,
@@ -14,7 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import { ActionSheetIOS } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const SERVER_URL = "http://192.168.1.163/api/"; // Change this to match your server IP
+const SERVER_URL = "http://192.168.1.163/api/"; // server IP
 
 const UploadScreen = ({ fetchUploadedImages }) => {
   const [imageSource, setImageSource] = useState(null);
